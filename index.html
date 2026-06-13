@@ -219,22 +219,31 @@
           <h2 class="text-lg font-bold text-slate-800 mb-2 border-b border-slate-100 pb-3">Estrategia de Sincronización</h2>
           
           <div class="space-y-4">
-            <!-- Import Configuration -->
-            <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">1. Enlace de descarga (Google Sheet CSV)</label>
-              <input type="text" id="sync-import-url" placeholder="https://docs.google.com/spreadsheets/d/.../edit?usp=sharing" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
-              <p class="text-[11px] text-slate-400 mt-1">Se utiliza para descargar stocks actualizados de "inventario" y registros de "ventas" en vivo.</p>
+            <!-- Import Configuration (Locked Single Google Sheet) -->
+            <div class="p-4 bg-brand-50 border border-brand-200 rounded-xl">
+              <span class="block text-xs font-bold text-brand-600 uppercase tracking-wider mb-2">Hoja de Cálculo Vinculada (Sincronización Activa)</span>
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3 rounded-lg border border-slate-200">
+                <div class="min-w-0 flex-grow">
+                  <span class="block text-sm font-bold text-slate-850 truncate">DINAMICA - Control de Inventario</span>
+                  <span class="block text-[11px] text-slate-500 font-mono mt-0.5 truncate select-all">https://docs.google.com/spreadsheets/d/1cQ9t7W9vsO_CxkYFxPTikUh5dBUrweaxh8yFqi_vUQk/...</span>
+                </div>
+                <a href="https://docs.google.com/spreadsheets/d/1cQ9t7W9vsO_CxkYFxPTikUh5dBUrweaxh8yFqi_vUQk/edit?usp=sharing" target="_blank" class="bg-brand-500 hover:bg-brand-600 text-white font-bold px-3.5 py-2 rounded-lg text-xs transition duration-150 flex items-center justify-center gap-1.5 shrink-0 shadow-sm">
+                  <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                  <span>Abrir Sheet</span>
+                </a>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-2">El sistema está enlazado permanentemente a esta hoja de cálculo para garantizar el control centralizado de inventario.</p>
             </div>
 
             <!-- Apps Script Configuration -->
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">2. Enlace de Apps Script (Macro Web App)</label>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Enlace de Apps Script (Macro Web App)</label>
               <input type="text" id="sync-post-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
               <p class="text-[11px] text-slate-400 mt-1">Se utiliza para subir nuevas ventas registradas y actualizar el inventario global al instante.</p>
             </div>
 
             <button onclick="saveSyncUrls()" class="bg-brand-500 hover:bg-brand-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition duration-150">
-              Guardar Enlaces
+              Guardar Enlace
             </button>
           </div>
         </div>
@@ -373,8 +382,10 @@
       dbSales = sales ? JSON.parse(sales) : [];
 
       // Link Sync Settings from localStorage
-      document.getElementById('sync-import-url').value = localStorage.getItem('dinamica_import_url') || '';
-      document.getElementById('sync-post-url').value = localStorage.getItem('dinamica_sync_url') || '';
+      const postUrlInput = document.getElementById('sync-post-url');
+      if (postUrlInput) {
+        postUrlInput.value = localStorage.getItem('dinamica_sync_url') || '';
+      }
     }
 
     function saveDatabase() {
@@ -808,12 +819,10 @@
 
     // ==================== GOOGLE SHEETS CLOUD INTEGRATION ====================
     function saveSyncUrls() {
-      const importUrl = document.getElementById('sync-import-url').value.trim();
       const postUrl = document.getElementById('sync-post-url').value.trim();
 
-      localStorage.setItem('dinamica_import_url', importUrl);
       localStorage.setItem('dinamica_sync_url', postUrl);
-      showToast('Parámetros de sincronización con Google Sheets guardados ✅', 'success');
+      showToast('Enlace de sincronización con Google Sheets guardado ✅', 'success');
     }
 
     async function downloadFromGoogleSheets() {
@@ -824,7 +833,7 @@
         renderPOSProducts();
         renderInventory();
       } else {
-        showToast('No se pudo establecer login/sincronización con el Sheet. Verifica tu enlace CSV.', 'error');
+        showToast('No se pudo establecer conexión con el Google Sheet. Intenta de nuevo más tarde.', 'error');
       }
     }
 
@@ -848,9 +857,7 @@
 
     // CSV/Google Sheet import logic
     async function performSheetsImportSynchronously() {
-      const importUrl = localStorage.getItem('dinamica_import_url')?.trim() || '';
-      if (!importUrl) return false;
-
+      const importUrl = 'https://docs.google.com/spreadsheets/d/1cQ9t7W9vsO_CxkYFxPTikUh5dBUrweaxh8yFqi_vUQk/edit?usp=sharing';
       let sheetId = extractSheetId(importUrl);
       if (!sheetId) return false;
 
