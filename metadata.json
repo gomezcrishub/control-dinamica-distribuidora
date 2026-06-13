@@ -1,0 +1,6 @@
+{
+  "name": "DINAMICA",
+  "description": "Control de inventario, ventas y proveedores para tu negocio de alimentos y bebidas, con resúmenes semanales.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
