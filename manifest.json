@@ -1,0 +1,17 @@
+{
+  "short_name": "DINAMICA",
+  "name": "DINAMICA - Control de Inventario",
+  "description": "Control de inventario, ventas y proveedores con sincronización en la nube",
+  "icons": [
+    {
+      "src": "../app/src/main/res/drawable/ic_dinamica_logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#287572",
+  "theme_color": "#287572",
+  "display": "standalone",
+  "orientation": "portrait"
+}
