@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e" />
+      <stop offset="50%" stop-color="#0d9488" />
+      <stop offset="100%" stop-color="#14b8a6" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0d9488" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Rounded Base Background -->
+  <rect width="512" height="512" rx="112" fill="url(#tealGrad)" />
+  
+  <!-- Outer Glow Circle -->
+  <circle cx="256" cy="256" r="170" fill="none" stroke="#ffffff" stroke-width="8" stroke-opacity="0.15" />
+  
+  <!-- Interactive Geometric Dynamic Arrow / Warehouse Element -->
+  <g filter="url(#glow)" transform="translate(128, 128)">
+    <!-- Main dynamic element symbolizing stock, sales, and dynamics 'D' -->
+    <path d="M40 40 H160 C210 40 216 80 216 110 C216 140 210 160 210 170 C200 190 180 216 140 216 H40 Z" fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Dynamic inner rising bars symbolizing sales/stock/growth -->
+    <rect x="80" y="90" width="20" height="70" rx="6" fill="#ffffff" />
+    <rect x="115" y="70" width="20" height="90" rx="6" fill="#ffffff" />
+    <rect x="150" y="110" width="20" height="50" rx="6" fill="#ffffff" />
+  </g>
+</svg>
