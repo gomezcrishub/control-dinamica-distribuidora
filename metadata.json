@@ -1,6 +1,0 @@
-{
-  "name": "DINAMICA - Control de Inventario",
-  "description": "Control de inventario, ventas y transacciones con sincronización en Google Sheets",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
