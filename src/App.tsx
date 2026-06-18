@@ -88,7 +88,9 @@ export default function App() {
   const [posSearchQuery, setPosSearchQuery] = useState('');
   const [posSelectedCategory, setPosSelectedCategory] = useState<string>('all');
   const [inventorySearchQuery, setInventorySearchQuery] = useState('');
-  const [selectedSeller, setSelectedSeller] = useState('Admin Principal');
+  const [selectedSeller, setSelectedSeller] = useState<string>(() => {
+    return localStorage.getItem('dinamica_seller') || 'Admin Principal';
+  });
 
   // Client Payment Calculator values
   const [receivedCash, setReceivedCash] = useState<string>('');
@@ -151,6 +153,11 @@ export default function App() {
   useEffect(() => {
     downloadDatabaseFromGoogleSheets(true);
   }, []);
+
+  // Persist selected seller name to cache
+  useEffect(() => {
+    localStorage.setItem('dinamica_seller', selectedSeller);
+  }, [selectedSeller]);
 
   // Save changes to localStorage helper
   const saveProductsToStorage = (updatedList: Product[]) => {
