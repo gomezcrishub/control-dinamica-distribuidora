@@ -1102,7 +1102,7 @@ export default function App() {
       <main className="flex-grow max-w-7xl w-full mx-auto p-6 flex flex-col lg:flex-row gap-8">
         
         {/* REFINED FLOATING NAVIGATION PANEL */}
-        <nav className="grid grid-cols-4 lg:flex lg:flex-col gap-1 sm:gap-1.5 bg-white p-1.5 sm:p-2.5 rounded-2xl border border-slate-200/60 shadow-sm lg:w-72 flex-shrink-0 self-start sticky top-24 w-full" id="main-navigation">
+        <nav className="grid grid-cols-4 lg:flex lg:flex-col gap-1 sm:gap-1.5 bg-white p-1.5 sm:p-2.5 rounded-2xl border border-slate-200/60 shadow-sm lg:w-72 flex-shrink-0 self-start sticky top-[73px] lg:top-24 z-30 w-full" id="main-navigation">
           <div className="hidden lg:block px-4 py-3.5 border-b border-slate-100 mb-2">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Navegación</span>
           </div>
@@ -1220,7 +1220,7 @@ export default function App() {
               <div className="flex-grow bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col min-h-[500px]">
                 
                 {/* Fixed/immobile Search query box & Filter categorized pill scroll */}
-                <div className="sticky top-20 lg:top-24 bg-white z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 -mt-6 -mx-6 pt-6 px-6 pb-4 mb-6 border-b border-slate-100 rounded-t-2xl shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+                <div className="sticky top-[152px] lg:top-24 bg-white z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 -mt-6 -mx-6 pt-6 px-6 pb-4 mb-6 border-b border-slate-100 rounded-t-2xl shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
                   <div className="relative flex-grow max-w-lg">
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4.5 h-4.5" />
                     <input 
@@ -1547,11 +1547,11 @@ export default function App() {
                   <thead>
                     <tr className="border-b border-slate-200 text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50/50">
                       <th className="py-3.5 px-4 font-bold">Artículo / SKU</th>
-                      <th className="py-3.5 px-4 font-bold">Categoría</th>
                       <th className="py-3.5 px-4 text-right font-bold">Costo Unit.</th>
                       <th className="py-3.5 px-4 text-right font-bold">Precio Venta</th>
                       <th className="py-3.5 px-4 text-center font-bold">Margen</th>
                       <th className="py-3.5 px-4 text-center font-bold">Stock Actual</th>
+                      <th className="py-3.5 px-4 font-bold">Categoría</th>
                       <th className="py-3.5 px-4 text-center font-bold">Acciones</th>
                     </tr>
                   </thead>
@@ -1567,6 +1567,14 @@ export default function App() {
                         const isLow = p.stock <= 5;
                         const isOutOfStock = p.stock <= 0;
                         const profitMargin = p.sellingPrice > 0 ? ((p.sellingPrice - p.costPrice) / p.sellingPrice) * 100 : 0;
+                        const displayMargin = parseFloat(profitMargin.toFixed(0));
+
+                        let marginColorClass = "text-emerald-600";
+                        if (displayMargin < 0) {
+                          marginColorClass = "text-rose-500 font-bold bg-rose-50/50 px-1.5 py-0.5 rounded";
+                        } else if (displayMargin === 0) {
+                          marginColorClass = "text-amber-500 font-bold bg-amber-50/50 px-1.5 py-0.5 rounded";
+                        }
 
                         return (
                           <tr key={p.id} className="hover:bg-slate-50/50 transition-colors text-xs text-slate-700">
@@ -1574,17 +1582,16 @@ export default function App() {
                               <span className="font-bold text-slate-900 block">{p.name}</span>
                               <span className="text-[10px] text-slate-400 font-mono mt-0.5 block">{p.barcode || 'Sin Código SKU'}</span>
                             </td>
-                            <td className="py-3.5 px-4 text-slate-500 font-medium">
-                              {p.category}
-                            </td>
                             <td className="py-3.5 px-4 text-right font-mono text-slate-500">
                               ${p.costPrice.toFixed(2)}
                             </td>
                             <td className="py-3.5 px-4 text-right font-mono font-bold text-teal-800">
                               ${p.sellingPrice.toFixed(2)}
                             </td>
-                            <td className="py-3.5 px-4 text-center font-mono font-semibold text-emerald-600">
-                              {profitMargin.toFixed(0)}%
+                            <td className="py-3.5 px-4 text-center">
+                              <span className={`font-mono font-semibold text-xs ${marginColorClass}`}>
+                                {displayMargin}%
+                              </span>
                             </td>
                             <td className="py-3.5 px-4 text-center">
                               {isOutOfStock ? (
@@ -1594,6 +1601,9 @@ export default function App() {
                               ) : (
                                 <span className="inline-block bg-teal-50 text-teal-800 px-2.5 py-1 rounded-full font-bold">{p.stock} {p.unit}</span>
                               )}
+                            </td>
+                            <td className="py-3.5 px-4 text-slate-500 font-medium">
+                              {p.category}
                             </td>
                             <td className="py-3.5 px-4 text-center">
                               <div className="flex items-center justify-center gap-2">
